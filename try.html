@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Summary</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+   <!-- ========== EMAILJS ========== -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <style>
+*{
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg1: #070b1a;
+  --bg2: #0b1020;
+  --glass: rgba(255,255,255,0.05);
+  --glass2: rgba(255,255,255,0.08);
+  --accent: #00f5ff;
+  --accent2: #a855f7;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+}
+
+/* BODY */
+body {
+  background: radial-gradient(circle at top, var(--bg2), var(--bg1));
+  padding-top: 100px;
+  margin: 0;
+  color: var(--text);
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: rgba(10, 10, 30, 0.7);
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 80px;
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  z-index: 1000;
+}
+
+.logo {
+  height: 55px;
+}
+
+.NG {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.1;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* BG IMAGE */
+.bg {
+  position: fixed; 
+  top: 0; 
+  left:0; 
+  width:100%; 
+  height:100%; 
+  object-fit:cover; 
+  z-index:-1; 
+  opacity:0.12;
+}
+.home_page-btn {
+  position: absolute;
+  top: 20px;
+  right: 70px;
+
+  padding: 10px 18px;
+  border-radius: 12px;
+
+  background: linear-gradient(90deg, #00f5ff, #a855f7);
+  color: black;
+  font-weight: bold;
+
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+.home_page-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0,245,255,0.5);
+  color: white;
+}
+/* CONTAINER */
+.container {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+/* CARD */
+.card {
+  width: 600px;
+  padding: 30px;
+  border-radius: 18px;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 40px rgba(0, 245, 255, 0.08);
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 60px rgba(0, 245, 255, 0.2);
+}
+
+.card h1 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.table_style {
+  text-align: left; 
+  padding: 5px; 
+  background: none; 
+  color: black;
+}
+
+</style>
+</head>
+<img src="bg1.jpg" alt="logo" class="bg">
+<header class="header">
+  <img src="logo.png" class="logo" alt="Neutral Grounds Logo">
+  <div class="NG">NEUTRAL<br>GROUNDS</div>
+
+<button class="home_page-btn" onclick="window.location.href='[1] HomePage.html'">
+  Home Page
+</button>
+</header>
+<div class="container">
+
+<div class="card register-card">
+<div class="register_position">
+<h1>Welcome to the Neutral Grounds Family!</h1>
+<h3>Your record will be used to prevent duplicate claiming of freebie demos.<br>
+  Please proceed to claim your ID at Neutral Grounds.
+</h3>
+
+
+<!--Registration-->
+    <table border="1" style="width:100%; border-collapse: collapse; margin-top:10px; text-align:left;">
+   <tr>
+      <th style=" text-align:center; padding: 5px; background:#010e28; color:white;">Personal Information</th>
+
+   </tr>
+  </div>
+    </table>
+    <table border="1" style="width:100%; border-collapse: collapse; margin-top:10px; text-align:left;">
+      <tr><th><h3>Name: </h3></th><td id="summaryName" style = "text-align: center;"></td> <tr>
+      <tr><th><h3>Email:</h3></th> <td id="summaryEmail" style = "text-align: center;"></td></tr>
+      <tr><th><h3>Branch Location: </h3></th> <td id="chosenDate"  style = "text-align: center;"></td></tr>
+      <tr><th><h3>Date: </h3></th> <td id="chosenDate"  style = "text-align: center;"></td></tr>
+      <tr><th><h3>Game Name: </h3></th> <td id="chosenDate"  style = "text-align: center;"></td></tr>
+    </table>
+  </div>
+
+</div>

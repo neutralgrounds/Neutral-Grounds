@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Join Demo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+   <!-- ========== EMAILJS ========== -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <style>
+*{
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg1: #070b1a;
+  --bg2: #0b1020;
+  --glass: rgba(255,255,255,0.05);
+  --glass2: rgba(255,255,255,0.08);
+  --accent: #00f5ff;
+  --accent2: #a855f7;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+}
+
+/* BODY */
+body {
+  background: radial-gradient(circle at top, var(--bg2), var(--bg1));
+  padding-top: 100px;
+  margin: 0;
+  color: var(--text);
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: rgba(10, 10, 30, 0.7);
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 80px;
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  z-index: 1000;
+}
+.logo {
+  height: 55px;
+}
+
+.NG {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.1;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.home_page-btn {
+  position: absolute;
+  top: 20px;
+  right: 70px;
+
+  padding: 10px 18px;
+  border-radius: 12px;
+
+  background: linear-gradient(90deg, #00f5ff, #a855f7);
+  color: black;
+  font-weight: bold;
+
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+.home_page-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0,245,255,0.5);
+  color: white;
+}
+/* BG IMAGE */
+.bg {
+  position: fixed; 
+  top: 0; 
+  left:0; 
+  width:100%; 
+  height:100%; 
+  object-fit:cover; 
+  z-index:-1; 
+  opacity:0.12;
+}
+
+/* CONTAINER */
+.container {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+/* CARD */
+.card {
+  width: 400px;
+  padding: 30px;
+  border-radius: 18px;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 40px rgba(0, 245, 255, 0.08);
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 60px rgba(0, 245, 255, 0.2);
+}
+
+.card h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* INPUTS */
+input, select {
+  width:100%;
+  padding:10px;
+  margin-top:8px;
+  margin-bottom:15px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: white;
+  outline: none;
+  transition: 0.3s;
+}
+
+select {
+  color: white;
+  background-color: rgba(255,255,255,0.05);
+}
+
+select option {
+  color: black;          /* 🔥 visible text */
+  background-color: white;
+}
+
+input:focus, select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* LABEL */
+label {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* BUTTON */
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px var(--accent);
+}
+.timer {
+    margin-top:10px; 
+    font-weight:bold; 
+    color:red; 
+}
+.hidden {
+  display: none;
+}
+</style>
+</head>
+<a href="https://imgur.com/n5sIKtJ"><img src="https://i.imgur.com/n5sIKtJ.jpg" title="source: imgur.com" class="bg" /></a>
+<header class="header">
+  <img src="logo.png" class="logo" alt="Neutral Grounds Logo">
+  <div class="NG">NEUTRAL<br>GROUNDS</div>
+
+<button class="home_page-btn" onclick="window.location.href='[1] HomePage.html'">
+  Home Page
+</button>
+</header>
+ 
+<!--Registration-->
+<div class="container">
+
+<div class="card register-card">
+<div class="register_position">
+    <h3>Personal Information</h3>
+    <form id="userForm">
+        <div id="nameFields">
+        <label for="username">Full Name</label>
+        <input type="text" name="username" id="username" 
+        placeholder="Surname, First Name, MI." required>
+        
+        <label for="email">Email</label>
+        <input type="text" name="email" id="email" 
+        placeholder="you@example.com" required>
+
+        <label for="branch_loc">Neutral Grounds Branch Attendend</label>
+        <select name="branch_loc" id="branch_loc" required>
+        <option value="">-- Select --</option>
+        <option value="Alimall">Alimall</option> 
+        <option value="Alabang Town Center">Alabang Town Center</option>
+        <option value="Centris">Centris</option>
+        <option value="Central Bloc Cebu">Central Bloc Cebu</option>
+        <option value="The District">The District</option>
+        <option value="Greenhills Mall">Greenhills Mall</option>
+        <option value="Ayala Malls Manila Bay">Ayala Malls Manila Bay</option>
+        <option value="Megamall">Megamall</option>
+        <option value="One Ayala">One Ayala</option>
+        <option value="Vertis North">Vertis North</option>
+      </select>
+
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date" required>
+
+        <label for="time">Time</label>
+        <input type="time" id="time" name="time" required>
+
+        <label for="game_name">Game Name</label>
+        <select name="game_name" id="game_name" required>
+        <option value="">-- Select --</option>
+        <option value="Flesh and Blood">Flesh and Blood</option> 
+        <option value="Magic: The Gathering">Magic: The Gathering</option>
+        <option value="Star Wars: Unlimited">Star Wars: Unlimited</option>
+        </select>
+        
+        <button type="button" class="btn" id="sendOtpBtn">Send OTP</button>
+
+    </form>
+</div>
+  </div>
+  </div>
+  
+  <!-- ========== OTP Verification (Section 3) ========== -->
+  <div class="container">
+  <div id="otpCard" class="card hidden">
+    <h3>OTP Verification</h3>
+    <p>We sent an OTP to the email you provided.</p>
+    <p><strong>Time Left: <span id="timerDisplay" 
+        style="color:darkred">120</span></strong></p>
+
+    <label for="otpInput">Enter OTP</label>
+    <input type="text" id="otpInput" maxlength="6" 
+    placeholder="Enter 6-character OTP">
+
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <button type="button" class="btn" id="verifyBtn">
+        Verify OTP</button> 
+      <button type="button" class="btn" id="resendBtn">
+        Resend OTP</button>
+    </div>
+    <p id="otpMessage" style="margin-top:10px;"></p>
+  </div>
+</div>
+</div>
+  <!-- ========== Next Webpaage ========== -->
+   <div class="container">
+  <div id="successCard" class="card hidden">
+    <h3>Verified - Next Step</h3>
+    <p>OTP verified! Please click Done</p>
+    <button type="button" class="btn" id="goToNextPage">Done</button>
+  </div>
+</div>
+</div>
+</div>
+<script>
+  // ELEMENTS 
+  emailjs.init("oX8p8NkfaEv2uyjIl");
+
+  const nameFields= document.getElementById('nameFields');
+  const sendOtpBtn = document.getElementById('sendOtpBtn');
+  const otpCard = document.getElementById('otpCard');
+  const otpInput = document.getElementById('otpInput');
+  const timerDisplay = document.getElementById('timerDisplay');
+  const otpMessage = document.getElementById('otpMessage');
+  const verifyBtn = document.getElementById('verifyBtn');
+  const resendBtn = document.getElementById('resendBtn');
+  const successCard = document.getElementById('successCard');
+  const submitFinal = document.getElementById('submitFinal');
+  const goToNextPageBtn=document.getElementById('goToNextPage');
+
+  // OTP variables
+  let generatedOTP = '';
+  let countdown = null;
+  const OTP_VALID_SECONDS = 120;
+
+  function generateOTP(length = 6) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let otp = '';
+    for (let i = 0; i < length; i++) {
+      otp += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return otp;
+  }
+
+  function startTimer() {
+    clearInterval(countdown);
+    let remaining = OTP_VALID_SECONDS;
+    timerDisplay.textContent = remaining;
+    countdown = setInterval(() => {
+      remaining--;
+      timerDisplay.textContent = remaining;
+      if (remaining <= 0) {
+        clearInterval(countdown);
+        otpMessage.textContent = 'OTP expired — please resend.';
+        otpMessage.style.color = 'red';
+      }
+    }, 1000);
+  }
+
+  // to generate OTP
+  function sendOTP() {
+    const email = document.getElementById('email').value.trim();
+    if (!email) {
+      alert('Please enter your email.');
+      return;
+    }
+
+    generatedOTP = generateOTP(6);
+
+    let params = {
+      otp: generatedOTP,
+      to_email: email
+    };
+
+    emailjs.send("service_5xtsric", "template_0ta630g", params)
+      .then(() => {
+        alert('OTP sent to your email!');
+        otpCard.classList.remove('hidden');
+        otpMessage.textContent = '';
+        startTimer();
+        console.log("Generated OTP:", generatedOTP); // for testing
+      })
+      .catch(err => {
+        alert('EmailJS Error: ' + JSON.stringify(err));
+      });
+  }
+
+  // to verify OTP
+  function verifyOTP() {
+    const userOTP = otpInput.value.trim();
+    if (!userOTP) {
+      otpMessage.textContent = 'Please enter the OTP.';
+      otpMessage.style.color = 'red';
+      return;
+    }
+
+    if (parseInt(timerDisplay.textContent) <= 0) {
+      otpMessage.textContent = 'OTP expired. Please resend.';
+      otpMessage.style.color = 'red';
+      return;
+    }
+
+if (userOTP === generatedOTP) {
+  clearInterval(countdown);
+  otpMessage.textContent = 'OTP Verified!';
+  otpMessage.style.color = 'green';
+
+  successCard.classList.remove('hidden');
+
+    } else {
+      otpMessage.textContent = 'Invalid OTP. Please click Resend.';
+      otpMessage.style.color = 'red';
+    }
+  }
+
+  // Resend OTP
+  function resendOTP() {
+    const email = document.getElementById('email').value.trim();
+    if (!email) {
+      alert('Email not found. Please re-enter your email.');
+      return;
+    }
+
+    generatedOTP = generateOTP(6);
+
+const username = document.getElementById('username').value;
+let params = {
+  otp: generatedOTP,
+  to_email: email,
+  username: username  
+    };
+
+    emailjs.send("service_5xtsric", "template_0ta630g", params)
+      .then(() => {
+        otpMessage.textContent='New OTP sent successfully!';
+        otpMessage.style.color='green';
+        otpInput.value="";
+        startTimer();
+        console.log("Resent OTP:", generatedOTP); 
+      })
+      .catch(err => {
+        otpMessage.textContent='Failed to resend OTP. Try again';
+        otpMessage.style.color='red';
+        console.error(err);
+      });
+  }
+
+
+  sendOtpBtn.addEventListener('click', sendOTP);
+  verifyBtn.addEventListener('click', verifyOTP);
+  resendBtn.addEventListener('click', resendOTP);
+
+    const userData = {
+    username: document.getElementById("username").value,
+    email: document.getElementById("email").value,
+    branch_loc: document.getElementById("branch_loc").value,
+    date: document.getElementById("date").value,
+    time: document.getElementById("time").value,
+    game_name: document.getElementById("game_name").value,
+  };
+
+function saveUserData() {
+  const userData = {
+    username: document.getElementById("username").value,
+    email: document.getElementById("email").value,
+    branch_loc: document.getElementById("branch_loc").value,
+    date: document.getElementById("date").value,
+    time: document.getElementById("time").value,
+    game_name: document.getElementById("game_name").value,
+  };
+
+  let users = JSON.parse(localStorage.getItem("players")) || [];
+
+  users.push(userData);
+
+  localStorage.setItem("players", JSON.stringify(users));
+}
+goToNextPageBtn.addEventListener("click", function () {
+  saveUserData();
+  window.location.href = "[5] Success Page.html";
+});
+</script>
+</html>

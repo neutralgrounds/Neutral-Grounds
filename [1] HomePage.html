@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Home Page</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <style>
+*{
+  box-sizing: border-box;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+  --bg1: #070b1a;
+  --bg2: #0b1020;
+  --glass: rgba(255,255,255,0.05);
+  --accent: #00f5ff;
+  --accent2: #a855f7;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+}
+
+/* BODY */
+body {
+  margin: 0;
+  padding-top: 100px;
+  background: radial-gradient(circle at top, var(--bg2), var(--bg1));
+  color: var(--text);
+
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  gap: 10px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 80px;
+  background: rgba(10,10,30,0.7);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  z-index: 1000;
+}
+
+.logo {
+  height: 55px;
+}
+
+.NG {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.1;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* BG IMAGE */
+.bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0.12;
+}
+
+/* HERO */
+.hero-text {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.hero-text h1 {
+  font-size: 48px;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #fff, var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-text p {
+  font-size: 14px;
+  color: var(--muted);
+  max-width: 500px;
+  margin: auto;
+}
+
+/* CONTAINER */
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* CARD */
+.card {
+  width: 320px;
+  padding: 25px;
+  border-radius: 18px;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 40px rgba(0, 245, 255, 0.2);
+}
+
+.card h1 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+/* BUTTON */
+.btn {
+  padding: 12px;
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* PLAYER BUTTON */
+.player-btn {
+  background: linear-gradient(90deg, #1e90ff, #00f5ff);
+  color: black;
+}
+
+.player-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #00f5ff;
+}
+
+/* STAFF BUTTON */
+.staff-btn {
+  background: linear-gradient(90deg, #facc15, #f59e0b);
+  color: black;
+}
+
+.staff-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #facc15;
+}
+  </style>
+  </head>
+
+<!---background and logo-->
+<img src="bg1.jpg" alt="logo" class="bg">
+<header class="header">
+  <img src="logo.png" class="logo" alt="Neutral Grounds Logo">
+  <h1 class="NG">NEUTRAL<br>GROUNDS</h1>
+</header>
+<body>
+<div class="hero-text">
+  <h1>Welcome to Neutral Grounds</h1>
+  <p>A competitive space where players and staff manage everything in one system.</p>
+</div>
+
+<div class="container">
+<!---Player Button-->
+<div class="card player-card">
+<div class="home-buttons">
+<div class="join_position">
+  <h1> Join the Demo</h1>
+  <h3>New to Neutral Grounds?
+    <br>Register your accont here and be
+    <br>a part of the Neutral Grounds Family!</h3>
+ <button type="button" class="btn player-btn" id="join_page" 
+ onclick="window.location.href='[4] Join Demo.html'">
+ <h4>JOIN NOW<h4></button>
+</div>
+</div>
+</div>
+
+<!---Dashboard Button-->
+<div class="card staff-card">
+  <h1>Staff Dashboard</h1>
+  <h3>Access Internal tools 
+    <br>and system for Event 
+    <br>Management and Tracker. <br></h3>
+ <button type="button" class="btn staff-btn" id="staff_page" 
+ onclick="window.location.href='[2] Staff Dashboard.html'">
+  <h4>ENTER DASHBOARD<h4></button>
+</div>
+</div>
+</div>
+</html>
+
