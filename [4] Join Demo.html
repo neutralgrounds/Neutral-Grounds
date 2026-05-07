@@ -7,12 +7,10 @@
    <!-- ========== EMAILJS ========== -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script type="module">
-  // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-  // Your web app's Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyBxLreePpgQYwfyEXeIp7qSTVhrkPDlx0s",
     authDomain: "neutral-grounds-97112.firebaseapp.com",
@@ -23,14 +21,13 @@
     measurementId: "G-EBXGZC0D1W"
   };
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
   const db = getFirestore(app);
 
-  // Make Firestore available globally
+  // Make Firestore available globally - ADD addDoc HERE
   window.db = db;
-  window.firestoreLib = { collection, getDocs };
+  window.firestoreLib = { collection, getDocs, addDoc };
 </script>
   <style>
 *{
@@ -453,7 +450,10 @@ let params = {
     game_name: document.getElementById("game_name").value,
   };
 
-function saveUserData() {
+async function saveUserData() {
+  const { collection, addDoc } = window.firestoreLib;
+  const db = window.db;
+
   const userData = {
     username: document.getElementById("username").value,
     email: document.getElementById("email").value,
@@ -461,36 +461,23 @@ function saveUserData() {
     date: document.getElementById("date").value,
     time: document.getElementById("time").value,
     game_name: document.getElementById("game_name").value,
-  };
-
-  let users = JSON.parse(localStorage.getItem("players")) || [];
-
-  users.push(userData);
-
-async function saveUserData() {
-  const { collection, addDoc } = window.firestoreLib;
-  const db = window.db;
-
-  const userData = {
-    username: document.getElementById("username").value,
-    email:    document.getElementById("email").value,
-    branch_loc: document.getElementById("branch_loc").value,
-    date:     document.getElementById("date").value,
-    time:     document.getElementById("time").value,
-    game_name: document.getElementById("game_name").value,
-    status:   "Pending",
+    status: "Pending",
     timestamp: new Date().toISOString()
   };
 
   try {
     await addDoc(collection(db, "players"), userData);
     console.log("Player saved to Firestore!");
+    alert("Registration saved successfully!");
   } catch (e) {
     console.error("Error saving:", e);
+    alert("Error saving registration: " + e.message);
   }
-}}
-goToNextPageBtn.addEventListener("click", function () {
-  saveUserData();
+}
+
+// Keep this event listener at the bottom
+goToNextPageBtn.addEventListener("click", async function () {
+  await saveUserData();
   window.location.href = "[5] Success Page.html";
 });
 </script>
