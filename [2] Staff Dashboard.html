@@ -4,7 +4,29 @@
   <meta charset="utf-8" />
   <title>Staff Dashboard</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyBxLreePpgQYwfyEXeIp7qSTVhrkPDlx0s",
+    authDomain: "neutral-grounds-97112.firebaseapp.com",
+    projectId: "neutral-grounds-97112",
+    storageBucket: "neutral-grounds-97112.firebasestorage.app",
+    messagingSenderId: "926635160340",
+    appId: "1:926635160340:web:2f7303a01773696fe78801",
+    measurementId: "G-EBXGZC0D1W"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
   <style>
 *{
   box-sizing: border-box;
@@ -447,7 +469,18 @@ setInterval(updateDate, 1000);
 document.getElementById("totalPlayers").textContent = players.length;
 
 /*for the data to show in the table*/
-function loadTable() {
+async function loadTable() {
+  const { collection, getDocs } = window.firestoreLib;
+  const db = window.db;
+
+  const querySnapshot = await getDocs(collection(db, "players"));
+  const players = [];
+
+  querySnapshot.forEach(doc => {
+    players.push({ id: doc.id, ...doc.data() });
+  });
+
+  const table = document.getElementById("playerTable");
   table.innerHTML = "";
 
   players.forEach((player, index) => {
@@ -462,13 +495,11 @@ function loadTable() {
         <td>${player.branch_loc}</td>
         <td><input type="checkbox" onclick="updateStatus(this)"></td>
         <td class="status">Pending</td>
-      </tr>
-    `;
+      </tr>`;
     table.innerHTML += row;
   });
 
   document.getElementById("totalPlayers").textContent = players.length;
-
   countClaimed();
   countPending();
 }

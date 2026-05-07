@@ -6,6 +6,29 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
    <!-- ========== EMAILJS ========== -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyBxLreePpgQYwfyEXeIp7qSTVhrkPDlx0s",
+    authDomain: "neutral-grounds-97112.firebaseapp.com",
+    projectId: "neutral-grounds-97112",
+    storageBucket: "neutral-grounds-97112.firebasestorage.app",
+    messagingSenderId: "926635160340",
+    appId: "1:926635160340:web:2f7303a01773696fe78801",
+    measurementId: "G-EBXGZC0D1W"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
   <style>
 *{
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -441,8 +464,28 @@ function saveUserData() {
 
   users.push(userData);
 
-  localStorage.setItem("players", JSON.stringify(users));
-}
+async function saveUserData() {
+  const { collection, addDoc } = window.firestoreLib;
+  const db = window.db;
+
+  const userData = {
+    username: document.getElementById("username").value,
+    email:    document.getElementById("email").value,
+    branch_loc: document.getElementById("branch_loc").value,
+    date:     document.getElementById("date").value,
+    time:     document.getElementById("time").value,
+    game_name: document.getElementById("game_name").value,
+    status:   "Pending",
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    await addDoc(collection(db, "players"), userData);
+    console.log("Player saved to Firestore!");
+  } catch (e) {
+    console.error("Error saving:", e);
+  }
+}}
 goToNextPageBtn.addEventListener("click", function () {
   saveUserData();
   window.location.href = "[5] Success Page.html";
