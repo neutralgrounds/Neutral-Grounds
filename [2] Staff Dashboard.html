@@ -29,6 +29,7 @@
   // Make Firestore available globally
   window.db = db;
   window.firestoreLib = { collection, getDocs };
+  window.loadTable();
 </script>
   <style>
 *{
@@ -529,7 +530,6 @@ function countPending() {
 
   document.getElementById("pendingCount").textContent = pending;
 }
-loadTable();
 </script>
 </body>
 
