@@ -561,6 +561,9 @@ select:focus{
   const submitFinal = document.getElementById('submitFinal');
   const goToNextPageBtn=document.getElementById('goToNextPage');
 
+  function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
   // OTP variables
   let generatedOTP = '';
   let countdown = null;
@@ -591,32 +594,37 @@ select:focus{
   }
 
   // to generate OTP
-  function sendOTP() {
-    const email = document.getElementById('email').value.trim();
-    if (!email) {
-      alert('Please enter your email.');
-      return;
-    }
+function sendOTP() {
+  const email = document.getElementById('email').value.trim();
 
-    generatedOTP = generateOTP(6);
-
-    let params = {
-      otp: generatedOTP,
-      to_email: email
-    };
-
-    emailjs.send("service_zc7tgmk", "template_412ojst", params)
-      .then(() => {
-        alert('OTP sent to your email!');
-        otpCard.classList.remove('hidden');
-        otpMessage.textContent = '';
-        startTimer();
-        console.log("Generated OTP:", generatedOTP); // for testing
-      })
-      .catch(err => {
-        alert('EmailJS Error: ' + JSON.stringify(err));
-      });
+  if (!email) {
+    alert("Email is required.");
+    return;
   }
+
+  if (!isValidEmail(email)) {
+    alert("Invalid email format.");
+    return;
+  }
+
+  generatedOTP = generateOTP(6);
+
+  let params = {
+    to_email: email,
+    otp: generatedOTP
+  };
+
+  emailjs.send("service_zc7tgmk", "template_412ojst", params)
+    .then(() => {
+      alert("OTP sent!");
+      otpCard.classList.remove("hidden");
+      startTimer();
+    })
+    .catch(err => {
+      console.error(err);
+      alert("EmailJS Error: " + JSON.stringify(err));
+    });
+}
 
   // to verify OTP
   function verifyOTP() {
