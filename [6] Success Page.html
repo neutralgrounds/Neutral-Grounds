@@ -74,27 +74,6 @@ body {
   opacity:0.12;
 }
 
-/* BUTTON */
-.home_page-btn {
-  position: absolute;
-  top: 20px;
-  right: 70px;
-  padding: 10px 18px;
-  border-radius: 12px;
-  background: linear-gradient(90deg, #00f5ff, #a855f7);
-  color: black;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.home_page-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(0,245,255,0.5);
-  color: white;
-}
-
 /* CONTAINER */
 .container {
   display: flex;
@@ -188,25 +167,15 @@ tr {
   transition: 0.3s ease;
 }
 
-.claim-btn {
+.homepage-btn {
   background: linear-gradient(90deg, #00f5ff, #a855f7);
   color: black;
 }
 
-.claim-btn:hover {
+.homepage-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 0 20px rgba(0,245,255,0.5);
   color: white;
-}
-
-.dashboard-btn {
-  background: rgba(255,255,255,0.08);
-  color: white;
-  border: 1px solid rgba(255,255,255,0.15);
-}
-
-.dashboard-btn:hover {
-  background: rgba(255,255,255,0.15);
 }
 
 /* ANIMATION */
@@ -300,15 +269,11 @@ tr {
     <!-- ACTION BUTTONS -->
     <div class="action-buttons">
 
-      <button class="claim-btn"
-      onclick="window.location.href='claim.html'">
-        Claim ID
+      <button class="homepage-btn"
+      onclick="window.location.href='index.html'">
+        Back to Home Page
       </button>
 
-      <button class="dashboard-btn"
-      onclick="window.location.href='dashboard.html'">
-        Continue
-      </button>
 
     </div>
 
