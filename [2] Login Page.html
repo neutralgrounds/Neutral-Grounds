@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In Page</title>
+
+    <style>
+*{
+  box-sizing: border-box;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root{
+  --bg1:#070b1a;
+  --bg2:#0b1020;
+  --glass:rgba(255,255,255,0.06);
+  --accent:#00f5ff;
+  --accent2:#a855f7;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+}
+
+/* BODY */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, var(--bg2), var(--bg1));
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 80px;
+  overflow: hidden;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  gap: 10px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 80px;
+  background: rgba(10,10,30,0.7);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  z-index: 1000;
+}
+
+.logo {
+  height: 55px;
+}
+
+.NG{
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.1;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+
+  position: relative;
+  overflow: hidden;
+
+  background: url('[f] background.jpg') no-repeat center;
+  background-size: cover;
+
+  animation: animateBg 6s linear infinite;
+
+  /* 🔥 reduces harsh brightness */
+  filter: saturate(1.2) brightness(0.85);
+}
+section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.7); /*  adjust this */
+  pointer-events: none;
+}
+
+/* softer color shift */
+@keyframes animateBg {
+  0% {
+    filter: hue-rotate(0deg) saturate(1.2) brightness(0.85);
+  }
+  100% {
+    filter: hue-rotate(360deg) saturate(1.2) brightness(0.85);
+  }
+}
+/* LOGIN / REGISTER BOX (BASE STYLE) */
+.login-box,
+.register-box {
+  width: 420px;
+  display: none;
+  padding: 30px;
+  border-radius: 18px;
+
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+
+  box-shadow:
+    0 0 25px rgba(0,245,255,0.08),
+    0 0 40px rgba(168,85,247,0.08);
+
+  display: none; /* 🔥 IMPORTANT: hidden by default */
+  justify-content: center;
+  align-items: center;
+
+  animation: fadeIn 0.4s ease;
+}
+
+/* LOGIN DEFAULT VISIBLE */
+.login-box.active {
+  display: flex;
+}
+
+/* REGISTER SHOWN ONLY WHEN ACTIVE */
+.register-box.active {
+  display: flex;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* FORM */
+form {
+  width: 100%;
+}
+
+/* TITLE */
+h2 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+/* INPUT */
+.input-box {
+  position: relative;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 12px 40px 12px 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  color: white;
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-box input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.input-box label {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 13px;
+  pointer-events: none;
+  transition: 0.3s;
+}
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+  top: -10px;
+  font-size: 11px;
+  color: var(--accent);
+}
+
+/* ICON */
+.icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+}
+
+/* REMEMBER */
+.remember,
+.remember-forgot {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+/* BUTTON */
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px var(--accent);
+}
+
+/* SWITCH LINK */
+.register-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+.register-link a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .login-box,
+  .register-box {
+    width: 95%;
+  }
+}
+    </style>
+</head>
+
+<!--Header and Logo-->
+<header class="header">
+  <img src="[a] NG-Logo.png" alt="Neutral Grounds Logo" class="logo">
+  <h1 class="NG">
+  NEUTRAL <br>
+  GROUNDS</h1>
+</header>
+
+<body>
+    <section>
+        <div class="login-box">
+            <form id="login-form">
+                <h2>Log In</h2>
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="mail"></ion-icon>
+                    </span>
+                    <input type="email" id="login-email" required>
+                    <label>Email</label>
+                </div>
+<div class="input-box">
+    <span class="icon toggle-password" onclick="togglePassword('login-password', this)">
+        <ion-icon name="eye-off"></ion-icon>
+    </span>
+
+    <input type="password" id="login-password" required>
+    <label>Password</label>
+</div>
+                <div class="remember-forgot">
+                    <label><input type="checkbox"> Remember me</label>
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit">Log In</button>
+                <div class="register-link">
+                    <p>Don't have an account? <a href="#" id="go-to-register">Register</a></p>
+                </div>
+            </form>
+        </div>
+
+        <div class="register-box">
+            <form id="register-form">
+                <h2>Register</h2>
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="mail"></ion-icon>
+                    </span>
+                    <input type="email" id="register-email" required>
+                    <label>Email</label>
+                </div>
+<div class="input-box">
+    <span class="icon toggle-password" onclick="togglePassword('register-password', this)">
+        <ion-icon name="eye-off"></ion-icon>
+    </span>
+
+    <input type="password" id="register-password" required>
+    <label>Password</label>
+</div>
+                <div class="remember">
+                    <label><input type="checkbox" required> I agree to the terms & conditions</label>
+                </div>
+                <button type="submit">Register</button>
+                <div class="register-link">
+                    <p>Already have an account? <a href="#" id="go-to-login">Log In</a></p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBxLreePpgQYwfyEXeIp7qSTVhrkPDlx0s",
+            authDomain: "neutral-grounds-97112.firebaseapp.com",
+            projectId: "neutral-grounds-97112",
+            storageBucket: "neutral-grounds-97112.firebasestorage.app",
+            messagingSenderId: "926635160340",
+            appId: "1:926635160340:web:2f7303a01773696fe78801"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+const loginBox = document.querySelector('.login-box');
+const registerBox = document.querySelector('.register-box');
+
+const registerLink = document.getElementById('go-to-register');
+const loginLink = document.getElementById('go-to-login');
+
+// default state
+loginBox.classList.add("active");
+
+registerLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    loginBox.classList.remove("active");
+    registerBox.classList.add("active");
+});
+
+loginLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    registerBox.classList.remove("active");
+    loginBox.classList.add("active");
+});
+
+        const registerForm = document.getElementById('register-form');
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    alert("Registration Successful! Welcome " + user.email);
+                    registerBox.style.display = "none";
+                    loginBox.style.display = "flex";
+                    registerForm.reset();
+                })
+                .catch((error) => {
+                    alert("Registration Error: " + error.message);
+                });
+        });
+
+        const loginForm = document.getElementById('login-form');
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    alert("Login Successful! Welcome back.");
+
+                    window.location.href = "[3] Demo Tracking Dashboard.html";
+                })
+                .catch((error) => {
+                    alert("Login Failed: " + error.message);
+                });
+        });
+window.togglePassword = function(inputId, iconSpan) {
+    const passwordInput = document.getElementById(inputId);
+    const icon = iconSpan.querySelector("ion-icon");
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.setAttribute("name", "eye");
+    } else {
+        passwordInput.type = "password";
+        icon.setAttribute("name", "eye-off");
+    }
+}
+    </script>
+</body>
+</html>

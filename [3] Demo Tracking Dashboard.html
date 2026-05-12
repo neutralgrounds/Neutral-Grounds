@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Staff Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBxLreePpgQYwfyEXeIp7qSTVhrkPDlx0s",
+    authDomain: "neutral-grounds-97112.firebaseapp.com",
+    projectId: "neutral-grounds-97112",
+    storageBucket: "neutral-grounds-97112.firebasestorage.app",
+    messagingSenderId: "926635160340",
+    appId: "1:926635160340:web:2f7303a01773696fe78801",
+    measurementId: "G-EBXGZC0D1W"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getFirestore(app);
+
+  // Make Firestore available globally
+  window.db = db;
+  window.firestoreLib = { collection, getDocs };
+  window.loadTable();
+</script>
+  <style>
+*{
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+:root {
+  --bg1: #070b1a;
+  --bg2: #0b1020;
+  --glass: rgba(255,255,255,0.05);
+  --accent: #00f5ff;
+  --accent2: #a855f7;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+}
+
+/* BODY */
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, var(--bg2), var(--bg1));
+  color: var(--text);
+  display: flex;
+  padding-top: 80px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  gap: 10px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 80px;
+  background: rgba(10,10,30,0.7);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  z-index: 1000;
+}
+
+.logo {
+  height: 55px;
+}
+
+.NG {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.1;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0.12;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  height: calc(100vh - 80px);
+  background: rgba(10,10,30,0.7);
+  backdrop-filter: blur(15px);
+  border-right: 1px solid rgba(255,255,255,0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  opacity: 0.70;
+}
+
+/* MENU ITEM */
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: 0.25s;
+}
+
+.menu-item:hover {
+  background: rgba(0,245,255,0.1);
+  color: white;
+  box-shadow: 0 0 15px rgba(0,245,255,0.2);
+}
+
+/* ACTIVE STATE (optional) */
+.menu-item.active {
+  background: linear-gradient(90deg, rgba(0,245,255,0.2), transparent);
+  color: white;
+}
+
+.menu-icon {
+  width: 20px;
+}
+
+/* MAIN */
+.main-content {
+  margin-left: 240px;
+  padding: 30px;
+  width: calc(100% - 240px);
+  min-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+/* TITLE */
+.staff-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.staff-icon {
+  width: 35px;
+}
+
+.staff-row h1 {
+  margin: 0;
+  font-size: 24px;
+}
+/* CONTAINER */
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.card {
+  width: 100%;
+  padding: 10px;
+  border-radius: 18px;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 40px rgba(0, 245, 255, 0.08);
+  transition: 0.3s ease;
+}
+
+.card h1 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  background: var(--glass);
+  backdrop-filter: blur(15px);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* HEADER */
+th {
+  padding: 14px;
+  text-align: center;
+  background: rgba(255,255,255,0.08);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* CELLS */
+td {
+  padding: 12px;
+  text-align: center;
+  font-size: 13px;
+}
+
+/* ROW HOVER */
+tr:hover {
+  background: rgba(0,245,255,0.06);
+}
+
+/* STATUS */
+.status {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+/* STATES */
+.pending {
+  background: rgba(245,158,11,0.15);
+  color: #fbbf24;
+}
+
+.done {
+  background: rgba(16,185,129,0.15);
+  color: #34d399;
+}
+
+/* CHECKBOX */
+input[type="checkbox"] {
+  transform: scale(1.2);
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+/* SMALL TEXT */
+p {
+  color: var(--muted);
+  margin-top: 0;
+}
+.filter-btn {
+  background: linear-gradient(90deg, #1e90ff, #00f5ff);
+  color: black;
+  border-radius: 5px;
+}
+
+.filter-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #00f5ff;
+}
+.top-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  gap: 100px;
+  flex-wrap: wrap;
+}
+#searchInput {
+  padding: 10px;
+  width: 250px; /* adjust size */
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: white;
+}
+.filters {
+  display: flex;
+  gap: 10px;
+}
+/* SCROLLBAR */
+::-webkit-scrollbar{
+  width: 2px;
+}
+
+::-webkit-scrollbar-track{
+  background: #08101f;
+}
+
+::-webkit-scrollbar-thumb{
+  background: linear-gradient(
+    var(--accent),
+    var(--accent2)
+  );
+
+  border-radius: 10px;
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px){
+
+  .sidebar{
+    width: 80px;
+    padding: 20px 10px;
+  }
+
+  .menu-item span{
+    display: none;
+  }
+
+  .main-content{
+    margin-left: 80px;
+    width: calc(100% - 80px);
+  }
+
+  .container{
+    margin-left: 0;
+  }
+
+  .card{
+    padding: 25px;
+  }
+}
+
+@media(max-width: 600px){
+
+  .main-content{
+    padding: 20px;
+  }
+
+  .card{
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  h3{
+    font-size: 18px;
+  }
+}
+</style>
+</head>
+
+<!--Header and Logo-->
+<img src="[f] background.jpg" alt="logo" class="bg">   
+<header class="header">
+  <img src="[a] NG-Logo.png" alt="Neutral Grounds Logo" class="logo">
+  <h1 class="NG">
+  NEUTRAL <br>
+  GROUNDS</h1>
+</header>
+
+<!--SideBar-->
+<body>
+    <div class="sidebar">
+  <a href="[3] Demo Tracking Dashboard.html" class="menu-item">
+    <img src="[c] logo.png" class= "menu-icon">
+    <span>Demo Tracking</span>
+</a>
+  <a href="[4] Form-to-Task .html" class="menu-item">
+    <img src="[d] logo.png" class= "menu-icon">
+    <span>Form-to-Task</span>
+  </a>
+  <a href="index.html" class="menu-item">
+    <img src="[e] logo.png" class= "menu-icon">
+    <span>Log Out</span>
+</a>
+</div>
+<!--Main Content of Demo Tracking-->
+<div class="main-content">
+
+<div class="staff-row">
+  <img src="[b] logo.png" class="staff-icon">
+  <h1>DEMO PLAYERS</h1>
+</div>
+  <p style="color: var(--muted);">Demo Player Registrations</p>
+
+<div class="container">
+<!--Total Registered Players-->
+<div class="card">
+  <h1  id="totalPlayers">0</h1>
+  <p>Total Players<p>
+</div>
+
+<!--Number of Freebies Claimed-->
+<div class="card">
+  <h1  id="claimedCount">0</h1>
+  <p>Freebies Claimed<p>
+</div>
+
+<!--Pending Freebies-->
+<div class="card">
+  <h1  id="pendingCount">0</h1>
+  <p>Pending Freebies<p>
+</div>
+
+<!--Date-->
+<div class="card">
+  <h1 id="dateNow"></h1>
+  <p>Date Today<p>
+</div>
+</div>
+<!--Search Bar-->
+<div class="top-controls">
+   <div class="filters">
+  <!--Filtration-->
+<button class="filter-btn" onclick="filterStatus('all')">
+  All</button>
+<button class="filter-btn" onclick="filterStatus('pending')">
+  Pending</button>
+<button class="filter-btn" onclick="filterStatus('claimed')">
+  Claimed</button>
+</div>
+<input type="text" id="searchInput" placeholder="Search player...">
+</div>
+<!--Table-->
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Game</th>
+        <th>Branch Attendend</th>
+        <th>Freebie</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody id="playerTable">
+      <!-- Sample Row -->
+      <tr>
+        <td>1</td>
+        <td>Nicole T. Penafiel</td>
+        <td>123@email.com</td>
+        <td>05/01/2026</td>
+        <td>2:00 PM</td>
+        <td>Magic: The Gathering</td>
+        <td>Eton Centris</td>
+        <td>
+          <input type="checkbox" onclick="updateStatus(this)">
+        </td>
+        <td class="status">Pending</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+<script>
+/*for players*/
+const table = document.getElementById("playerTable");
+let players = JSON.parse(localStorage.getItem("players")) || [];
+/*for Filtration*/
+function filterStatus(type) {
+  const rows = document.querySelectorAll("#playerTable tr");
+
+  rows.forEach(row => {
+    const status = row.querySelector(".status").textContent;
+
+    if (type === "all") {
+      row.style.display = "";
+    } 
+    else if (type === "pending" && status === "Pending") {
+      row.style.display = "";
+    } 
+    else if (type === "claimed" && status.includes("Claimed")) {
+      row.style.display = "";
+    } 
+    else {
+      row.style.display = "none";
+    }
+  });
+}
+/* Search Bar*/
+document.getElementById("searchInput").addEventListener("input", function () {
+  const value = this.value.toLowerCase();
+  const rows = document.querySelectorAll("#playerTable tr");
+
+  rows.forEach(row => {
+    const text = row.innerText.toLowerCase();
+    row.style.display = text.includes(value) ? "" : "none";
+  });
+});
+/*Checkbox*/
+    function updateStatus(checkbox) {
+  const row = checkbox.parentElement.parentElement;
+  const statusCell = row.querySelector(".status");
+
+  if (checkbox.checked) {
+    statusCell.textContent = "Freebie Claimed!";
+    statusCell.style.color = "#00ff99";
+  } else {
+    statusCell.textContent = "Pending";
+    statusCell.style.color = "orange";
+  }
+    countPending();
+  countClaimed();
+}
+
+/*for date*/
+function updateDate() {
+  const now = new Date();
+
+  const options = { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  };
+  const formattedDate = now.toLocaleDateString('en-US', options);
+  document.getElementById("dateNow").textContent = formattedDate;
+}
+// run once
+updateDate();
+// optional: auto-update every second
+setInterval(updateDate, 1000);
+
+/* for total players registered*/
+document.getElementById("totalPlayers").textContent = players.length;
+
+/*for the data to show in the table*/
+async function loadTable() {
+  const { collection, getDocs } = window.firestoreLib;
+  const db = window.db;
+
+  const querySnapshot = await getDocs(collection(db, "players"));
+  const players = [];
+
+  querySnapshot.forEach(doc => {
+    players.push({ id: doc.id, ...doc.data() });
+  });
+
+  const table = document.getElementById("playerTable");
+  table.innerHTML = "";
+
+  players.forEach((player, index) => {
+    const row = `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${player.username}</td>
+        <td>${player.email}</td>
+        <td>${player.date}</td>
+        <td>${player.time || "-"}</td>
+        <td>${player.game_name}</td>
+        <td>${player.branch_loc}</td>
+        <td><input type="checkbox" onclick="updateStatus(this)"></td>
+        <td class="status">Pending</td>
+      </tr>`;
+    table.innerHTML += row;
+  });
+
+  document.getElementById("totalPlayers").textContent = players.length;
+  countClaimed();
+  countPending();
+}
+/*for numbers of claimed freebies*/
+function countClaimed() {
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  let count = 0;
+
+  checkboxes.forEach(cb => {
+    if (cb.checked) count++;
+  });
+
+  document.getElementById("claimedCount").textContent = count;
+}
+
+/*for numbers of pending freebies*/
+function countPending() {
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  let pending = 0;
+
+  checkboxes.forEach(cb => {
+    if (!cb.checked) pending++;
+  });
+
+  document.getElementById("pendingCount").textContent = pending;
+}
+</script>
+</body>
+
+</html>

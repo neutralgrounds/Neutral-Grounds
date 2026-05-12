@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Form-to-Task Page</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+<style>
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root{
+  --bg1:#070b1a;
+  --bg2:#0b1020;
+  --glass:rgba(255,255,255,0.06);
+  --glass2:rgba(255,255,255,0.09);
+  --accent:#00f5ff;
+  --accent2:#a855f7;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+}
+
+/* BODY */
+body{
+  background: radial-gradient(circle at top, var(--bg2), var(--bg1));
+  min-height: 100vh;
+  color: var(--text);
+  overflow-x: hidden;
+  padding-top: 80px;
+}
+
+/* BACKGROUND */
+.bg{
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.10;
+  z-index: -2;
+}
+
+/* HEADER */
+.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 0 25px;
+
+  background: rgba(8,12,28,0.7);
+  backdrop-filter: blur(18px);
+
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+
+  z-index: 1000;
+}
+
+.logo{
+  height: 55px;
+}
+
+.NG{
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.1;
+
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    var(--accent2)
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow: 0 0 20px rgba(0,245,255,0.25);
+}
+
+/* SIDEBAR */
+.sidebar{
+  position: fixed;
+  top: 80px;
+  left: 0;
+
+  width: 240px;
+  height: calc(100vh - 80px);
+
+  padding: 20px;
+
+  background: rgba(8,12,28,0.55);
+
+  backdrop-filter: blur(18px);
+
+  border-right: 1px solid rgba(255,255,255,0.06);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  z-index: 500;
+}
+/* MENU ITEMS */
+.menu-item{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 12px 14px;
+
+  border-radius: 14px;
+
+  text-decoration: none;
+  color: var(--muted);
+
+  transition: 0.3s ease;
+}
+
+.menu-item:hover{
+  background: rgba(0,245,255,0.08);
+  color: white;
+
+  transform: translateX(5px);
+
+  box-shadow: 0 0 20px rgba(0,245,255,0.15);
+}
+
+.menu-icon{
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.main-content{
+  margin-left: 240px;
+  width: calc(100% - 240px);
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 60px 30px;
+}
+
+/* CENTER FIX */
+.container{
+  width: 100%;
+  max-width: 900px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0 auto;
+}
+
+/* CARD */
+.card{
+  width: 100%;
+  max-width: 800px;
+
+  padding: 45px;
+
+  border-radius: 26px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.06),
+    rgba(255,255,255,0.03)
+  );
+
+  backdrop-filter: blur(25px);
+
+  border: 1px solid rgba(255,255,255,0.10);
+
+  box-shadow:
+    0 0 30px rgba(0,245,255,0.08),
+    0 0 80px rgba(168,85,247,0.06);
+
+  transition: 0.35s ease;
+
+  position: relative;
+}
+
+.card:hover{
+  transform: translateY(-6px) scale(1.01);
+
+  box-shadow:
+    0 0 40px rgba(0,245,255,0.18),
+    0 0 120px rgba(168,85,247,0.12);
+}
+
+/* HEADINGS */
+h2,h3,h4{
+  color: white;
+  text-align: center;
+
+  margin-bottom: 22px;
+
+  letter-spacing: 0.5px;
+}
+
+h3{
+  font-size: 22px;
+}
+
+h4{
+  font-size: 18px;
+}
+
+/* SECTION SPACING */
+.event-group,
+.visual_hierarachy,
+.design_brand,
+.deadline_additional{
+  margin-bottom: 30px;
+}
+
+/* LABELS */
+label{
+  display: block;
+
+  margin-top: 14px;
+  margin-bottom: 6px;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  color: var(--muted);
+}
+
+/* INPUTS */
+input,
+select{
+  width: 100%;
+  padding: 12px 14px;
+
+  border-radius: 12px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.03);
+
+  color: white;
+
+  outline: none;
+
+  transition: 0.25s ease;
+}
+
+input:focus,
+select:focus{
+  border-color: var(--accent);
+
+  box-shadow:
+    0 0 10px rgba(0,245,255,0.35);
+
+  transform: scale(1.01);
+}
+/* PLACEHOLDER */
+input::placeholder{
+  color: #7c8799;
+}
+
+/* SELECT OPTIONS */
+select{
+  background-color: rgba(255,255,255,0.05);
+}
+
+select option{
+  color: black;
+  background: white;
+}
+
+/* BUTTON */
+button{
+  width: 100%;
+  padding: 14px;
+
+  margin-top: 25px;
+
+  border: none;
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  color: black;
+
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    var(--accent2)
+  );
+
+  transition: 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+button:hover{
+  transform: translateY(-2px) scale(1.03);
+
+  box-shadow:
+    0 0 25px rgba(0,245,255,0.6),
+    0 0 60px rgba(168,85,247,0.25);
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{
+  width: 8px;
+}
+
+::-webkit-scrollbar-track{
+  background: #08101f;
+}
+
+::-webkit-scrollbar-thumb{
+  background: linear-gradient(
+    var(--accent),
+    var(--accent2)
+  );
+
+  border-radius: 10px;
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px){
+
+  .sidebar{
+    width: 80px;
+    padding: 20px 10px;
+  }
+
+  .menu-item span{
+    display: none;
+  }
+
+  .main-content{
+    margin-left: 80px;
+    width: calc(100% - 80px);
+  }
+
+  .container{
+    margin-left: 0;
+  }
+
+  .card{
+    padding: 25px;
+  }
+}
+
+@media(max-width: 600px){
+
+  .main-content{
+    padding: 20px;
+  }
+
+  .card{
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  h3{
+    font-size: 18px;
+  }
+}
+    </style>
+</head>
+</style>
+</head>
+
+<!--Header and Logo-->
+<img src="[f] background.jpg" alt="logo" class="bg">   
+<header class="header">
+  <img src="[a] NG-Logo.png" alt="Neutral Grounds Logo" class="logo">
+  <h1 class="NG">
+  NEUTRAL <br>
+  GROUNDS</h1>
+</header>
+
+<!--SideBar-->
+<body>
+    <div class="main-content">
+    <div class="sidebar">
+  <a href="[3] Demo Tracking Dashboard.html" class="menu-item">
+    <img src="[c] logo.png" class= "menu-icon">
+    <span>Demo Tracking</span>
+</a>
+  <a href="[4] Form-to-Task .html" class="menu-item">
+    <img src="[d] logo.png" class= "menu-icon">
+    <span>Form-to-Task</span>
+  </a>
+  <a href="index.html" class="menu-item">
+    <img src="[e] logo.png" class= "menu-icon">
+    <span>Log Out</span>
+</a>
+</div>
+<div class="container card">
+<form action="" method="POST">
+            <h3>General Event Information</h3>
+
+            <label for="Name">Name:</label>
+            <input type="text" id="Name" name="Name" 
+placeholder="Surname, First Name, MI." required>
+            <label for="Email">Email:</label>
+            <input type="text" id="Email" name="Email" placeholder="Email" required>
+            
+            <label for="event_name">Event Name:</label>
+            <input type="text" id="event_name" name="event" placeholder="Event Name" required>
+
+            <label for="branch">Branch Location:</label>
+            <select id="branch" name="branch" required>
+                <option value="">-- Select --</option>
+                <option value="Alabang Town Center (Muntinlupa)"> Alabang Town Center (Muntinlupa) </option>
+                <option value="Ali Mall (Quezon City)"> Ali Mall (Quezon City) </option>
+                <option value="Ayala Mall Manila Bay (Paranaque City)"> Ayala Mall Manila Bay (Paranaque City) </option>
+                <option value="Central Bloc Cebu"> Central Bloc Cebu </option>
+                <option value="Centris Walk (Quezon City)"> Centris Walk (Quezon City) </option>
+                <option value="Distric Cavite (Imus)"> Distric Cavite (Imus) </option>
+                <option value="Green Hills Mall (San Juan)"> Green Hills Mall (San Juan) </option>
+                <option value="Gloreitta 2 (Makati)"> Gloreitta 2 (Makati) </option>
+                <option value="One Ayala (Makati)"> One Ayala (Makati) </option>
+                <option value="Trinoma Mall (Quezon City)"> Trinoma Mall (Quezon City) </option>
+                <option value="Vertis North (Quezon City)"> Vertis North (Quezon City) </option>
+            </select>
+
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+    
+            <label for="Time">Time:</label>
+            <input type="time" id="time" name="time" required>
+
+            <label for="entry-fee">Entry Fee & Mechanics:</label>
+            <input type="entry-fee" id="entry-fee" name="entry-fee" placeholder="Entree Fee & Mechanics" required>
+
+            <label for="prizes">Prizes:</label>
+            <input type="prizes" id="prizes" name="prizes" placeholder="Prizes" required>
+
+
+        <br>
+
+        <div class="visual_hierarachy">
+            <h3>Visual Hierarchy</h3>
+
+            <label for="pri_focus">Primary Focus / Main Game:</label>
+            <select id="pri_focus" name="pri_focus" required>
+                <option value="">-- Select --</option>
+                <option value="Flesh and Blood">Flesh and Blood</option>
+                <option value="Magic: The Gathering">Magic: The Gathering</option>
+                <option value="Star Wars: Unlimited">Star Wars: Unlimited</option>
+            </select>
+
+            <label for="sec_focus">Seconday Focus (Supporting games/side events that should be smaller):</label>
+            <input type="text" id="sec_focus" name="secondary" required>
+
+            <label for="call_act">Call to Action(What do players need to do?):</label>
+            <input type="text" id="call_toact" name="secondary" placeholder="e.g.Scan to register, Join the Demo, Inquire at Booth" required>
+        </div>
+
+        <br>
+        
+        <div class="design_brand">
+            <h4>Design Assets & Branding</h4>
+
+            <label for="req_logos">Required Logos (List all Logos to be included):</label>
+            <input type="text" id="req_logos" name="Logos" placeholder="Required Logos" required>
+
+            <label for="key_themes">Key Art / Themes (Specific character art or expansion visuals to be used):</label>
+            <input type="text" id="key_themes" name="key" placeholder="Key Art / Themes" required>
+        </div>
+        
+        <div class="deadline_additional">
+            <label for="date">Deadline:</label>
+            <input type="date" id="dl_date" name="deadline" required>
+
+            <label for="additional">Additional Requests:</label>
+            <input type="text", id="additional" name="requests">
+        </div>
+        
+        <button type="button" class="btn" onclick="sendEmail()">Submit</button>
+    </form>
+    </div>
+    
+<script type="text/javascript">
+async function sendEmail() {
+    const btn = document.querySelector(".btn");
+    const form = document.getElementById("event-details-form");
+
+    btn.innerText = "Event details sending in Email....";
+    btn.disabled = true;
+
+    const templateParams = {
+        Name: document.querySelector("#Name").value,
+        Email: document.querySelector("#Email").value,
+        Event_Name: document.querySelector("#event_name").value,
+        Branch: document.querySelector("#branch").value,
+        Date: document.querySelector("#date").value,
+        Time: document.querySelector("#time").value,
+        Entry_fee: document.querySelector("#entry-fee").value,
+        Prizes: document.querySelector("#prizes").value,
+        Primary_Focus_or_Main_Game: document.querySelector("#pri_focus").value,
+        Secondary_Focus: document.querySelector("#sec_focus").value,
+        Call_to_Action: document.querySelector("#call_toact").value,
+        Required_Logos: document.querySelector("#req_logos").value,
+        Key_Art_or_Themes: document.querySelector("#key_themes").value,
+        Deadline: document.querySelector("#dl_date").value,
+        Additional_Requirement: document.querySelector("#additional").value,
+    };
+
+    try {
+        const formData = new FormData();
+        Object.keys(templateParams).forEach(key => {
+            formData.append(key, templateParams[key]);
+        });
+
+        await fetch("https://script.google.com/macros/s/AKfycbzzg0aO6JYjFgghOWZ1xzuKKoJs-k6EoAuW2LzC98hmAIcLc12bqmBMN9hOM0u8kWfC/exec", {
+            method: "POST",
+            body: formData
+        });
+
+        await emailjs.send(
+            "service_u5ugn6a",
+            "template_alec2ei",
+            templateParams
+        );
+
+        alert("Email Sent!!");
+
+        // RESET FORM
+        if (form) {
+            form.reset();
+        } else {
+            document.querySelectorAll("input, select").forEach(el => el.value = "");
+        }
+
+    } catch (error) {
+        alert("Email not sent. Please check your internet connection: " + JSON.stringify(error));
+    }
+
+    btn.innerText = "Submit";
+    btn.disabled = false;
+}
+    </script>
+</body>
+
+</html>
