@@ -526,7 +526,7 @@ async function sendEmail() {
             formData.append(key, templateParams[key]);
         });
 
-        await fetch("https://script.google.com/macros/s/AKfycbzzg0aO6JYjFgghOWZ1xzuKKoJs-k6EoAuW2LzC98hmAIcLc12bqmBMN9hOM0u8kWfC/exec", {
+        await fetch("https://script.google.com/macros/s/AKfycbyDEYoKk0KAUIak-MQGn1PJikwYPzF_WtcSkWd7oKFzjZgnSb_0nvu3HoJp-Nck8SDrwQ/exec", {
             method: "POST",
             body: formData
         });
