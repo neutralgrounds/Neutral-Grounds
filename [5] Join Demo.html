@@ -68,7 +68,7 @@ body{
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* 🔥 vertical center */
+  justify-content: center; 
 }
 
 /* BACKGROUND */
@@ -246,7 +246,7 @@ body::after{
 
   animation: fadeUp 0.8s ease;
 
-  margin: auto; /* 🔥 centers card */
+  margin: auto;
 }
 /* CARD GLOW */
 .card::before{
@@ -683,15 +683,6 @@ let params = {
   verifyBtn.addEventListener('click', verifyOTP);
   resendBtn.addEventListener('click', resendOTP);
 
-    const userData = {
-    username: document.getElementById("username").value,
-    email: document.getElementById("email").value,
-    branch_loc: document.getElementById("branch_loc").value,
-    date: document.getElementById("date").value,
-    time: document.getElementById("time").value,
-    game_name: document.getElementById("game_name").value,
-  };
-
 async function saveUserData() {
   const { collection, addDoc } = window.firestoreLib;
   const db = window.db;
@@ -717,10 +708,24 @@ async function saveUserData() {
   }
 }
 
-// Keep this event listener at the bottom
 goToNextPageBtn.addEventListener("click", async function () {
   await saveUserData();
-  window.location.href = "[5] Success Page.html";
+
+  // GET VALUES
+  const userData = {
+    username: document.getElementById("username").value,
+    email: document.getElementById("email").value,
+    branch_loc: document.getElementById("branch_loc").value,
+    date: document.getElementById("date").value,
+    time: document.getElementById("time").value,
+    game_name: document.getElementById("game_name").value
+  };
+
+  // SAVE TO LOCAL STORAGE
+  localStorage.setItem("userData", JSON.stringify(userData));
+
+  // GO TO SUMMARY PAGE
+  window.location.href = "[6] Success Page.html";
 });
 </script>
 </html>
