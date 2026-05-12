@@ -547,7 +547,7 @@ select:focus{
 </div>
 <script>
   // ELEMENTS 
-  emailjs.init("oX8p8NkfaEv2uyjIl");
+  emailjs.init("R4JBm8GAtt1wXmYwl");
 
   const nameFields= document.getElementById('nameFields');
   const sendOtpBtn = document.getElementById('sendOtpBtn');
@@ -605,7 +605,7 @@ select:focus{
       to_email: email
     };
 
-    emailjs.send("service_5xtsric", "template_0ta630g", params)
+    emailjs.send("service_zc7tgmk", "template_412ojst", params)
       .then(() => {
         alert('OTP sent to your email!');
         otpCard.classList.remove('hidden');
@@ -663,7 +663,7 @@ let params = {
   username: username  
     };
 
-    emailjs.send("service_5xtsric", "template_0ta630g", params)
+    emailjs.send("service_zc7tgmk", "template_412ojst", params)
       .then(() => {
         otpMessage.textContent='New OTP sent successfully!';
         otpMessage.style.color='green';
