@@ -258,11 +258,40 @@ button:hover {
     width: 95%;
   }
 }
-  .home_page-btn{
-    right: 15px;
-    padding: 10px 14px;
+.home_page-btn {
+    margin-left: auto;
+    padding: 8px 18px;
     font-size: 12px;
-  }
+    width: auto;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.home_page-btn{
+  position: fixed;
+  top: 20px;
+  right: 35px;
+  padding: 11px 20px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    var(--accent2)
+  );
+  color: black;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s ease;
+  z-index: 1100;
+}
+
+.home_page-btn:hover{
+  transform: scale(1.05);
+  box-shadow:
+    0 0 20px rgba(0,245,255,0.4);
+  color: white;
+}
     </style>
 </head>
 
