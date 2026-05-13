@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <title>Form-to-Task Page</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+   <!-- ========== EMAILJS ========== -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-
 <style>
 *{
   margin: 0;
@@ -530,7 +530,8 @@ async function sendEmail() {
 
         await fetch("https://script.google.com/macros/s/AKfycbyDEYoKk0KAUIak-MQGn1PJikwYPzF_WtcSkWd7oKFzjZgnSb_0nvu3HoJp-Nck8SDrwQ/exec", {
             method: "POST",
-            body: formData
+            body: formData,
+            mode: "no-cors" 
         });
         await emailjs.send(
             "service_zc7tgmk",
@@ -548,8 +549,8 @@ async function sendEmail() {
         }
 
     } catch (error) {
-        alert("Email not sent. Please check your internet connection: " + JSON.stringify(error));
-    }
+alert("Email not sent. Please check your internet connection: " + (error?.text ? await error.text() : error?.message || JSON.stringify(error)));
+console.error("Full error:", error);    }
 
     btn.innerText = "Submit";
     btn.disabled = false;
