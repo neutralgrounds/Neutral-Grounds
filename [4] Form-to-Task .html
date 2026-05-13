@@ -505,59 +505,63 @@ button:hover{
     </form>
     <script type="text/javascript" src="script.js"></script>
 <script type="text/javascript">
-        async function sendEmail() {
-            const btn = document.querySelector(".btn");
-            const form = document.getElementById("event-details-form");
-            btn.innerText = "Event details sending in Email....";
-            btn.disabled = true;
-            
-            const templateParams = {
-                Name: document.querySelector("#Name").value,
-                Email: document.querySelector("#Email").value,
-                Event_Name: document.querySelector("#event_name").value,
-                Branch: document.querySelector("#branch").value,
-                Date: document.querySelector("#date").value,
-                Time: document.querySelector("#time").value,
-                Entry_fee: document.querySelector("#entry-fee").value,
-                Prizes: document.querySelector("#prizes").value,
-                Primary_Focus_or_Main_Game: document.querySelector("#pri_focus").value,
-                Secondary_Focus: document.querySelector("#sec_focus").value,
-                Call_to_Action: document.querySelector("#call_toact").value,
-                Required_Logos: document.querySelector("#req_logos").value,
-                Key_Art_or_Themes: document.querySelector("#key_themes").value,
-                Deadline: document.querySelector("#dl_date").value,
-                Additional_Requirement: document.querySelector("#additional").value,
-            };
+async function sendEmail() {
+    const btn = document.querySelector(".btn");
+    const form = document.getElementById("event-details-form");
+    btn.innerText = "Sending...";
+    btn.disabled = true;
 
-            try {
-                const formData = new FormData();
-                // Correct
-Object.keys(templateParams).forEach(key => formData.append(key, templateParams[key]));                 
-                await fetch("https://script.google.com/macros/s/AKfycbw3faWTmylVM9rnIZumYnXkkAXMOHiALrVySbHLTF-vAx447UArDQqmtuzGE4Y91Z3uog/exec",
-                    {method: 'POST', 
-                    body: formData,
-                    mode: "no-cors"
-                });
-            
-            await emailjs.send("service_zc7tgmk", "template_o6vgc6y", templateParams);
-            alert("Email Sent and Recorded!!!");
-            
-        
-            //--AUTO-CLEAR--//
-            if (form) {
-                form.reset();
-            } else {
-                document.querySelectorAll("input, select"). forEach(el => el.value ="");
-            }
-        } catch (error) {
-            alert("Email not sent :<" + error.toString());
-            console.error(error)
-        } finally{
-            btn.innerText = "Submit";
-            btn.disabled = false;
+    const templateParams = {
+        Name: document.querySelector("#Name").value,
+        Email: document.querySelector("#Email").value,
+        Event_Name: document.querySelector("#event_name").value,
+        Branch: document.querySelector("#branch").value,
+        Date: document.querySelector("#date").value,
+        Time: document.querySelector("#time").value,
+        Entry_fee: document.querySelector("#entry-fee").value,
+        Prizes: document.querySelector("#prizes").value,
+        Primary_Focus_or_Main_Game: document.querySelector("#pri_focus").value,
+        Secondary_Focus: document.querySelector("#sec_focus").value,
+        Call_to_Action: document.querySelector("#call_toact").value,
+        Required_Logos: document.querySelector("#req_logos").value,
+        Key_Art_or_Themes: document.querySelector("#key_themes").value,
+        Deadline: document.querySelector("#dl_date").value,
+        Additional_Requirement: document.querySelector("#additional").value,
+    };
+
+    // GOOGLE SHEETS
+    try {
+        const formData = new FormData();
+        Object.keys(templateParams).forEach(key => formData.append(key, templateParams[key]));
+
+        await fetch("https://script.google.com/macros/s/AKfycbzBYBE_Ad_Gofjw6vho1AP696eZaLj1gkpn6oyNfXj0j7yaTZUVw_LoZlj6uuyYgoF6Xg/exec", {
+            method: "POST",
+            body: formData,
+            mode: "no-cors"
+        });
+        console.log("Google Sheets: request sent");
+    } catch (sheetsError) {
+        console.warn("Google Sheets failed:", sheetsError);
+    }
+
+    // EMAILJS
+    try {
+        await emailjs.send("service_zc7tgmk", "template_o6vgc6y", templateParams);
+        alert("Email Sent and Recorded!!!");
+        if (form) {
+            form.reset();
+        } else {
+            document.querySelectorAll("input, select").forEach(el => el.value = "");
         }
-        }
-    </script>
+    } catch (emailError) {
+        alert("Email not sent :< " + (emailError.text || emailError.message || JSON.stringify(emailError)));
+        console.error("EmailJS error:", emailError);
+    }
+
+    btn.innerText = "Submit";
+    btn.disabled = false;
+}
+</script>
 </body>
 
 </html>
