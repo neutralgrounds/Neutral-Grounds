@@ -501,7 +501,7 @@ async function sendEmail() {
     const btn = document.querySelector(".btn");
     const form = document.getElementById("event-details-form");
 
-    btn.innerText = "Event details sending in Email....";
+    btn.innerText = "Sending...";
     btn.disabled = true;
 
     const templateParams = {
@@ -522,35 +522,36 @@ async function sendEmail() {
         Additional_Requirement: document.querySelector("#additional").value,
     };
 
+    // Step 1: Google Sheets (fire and forget)
     try {
         const formData = new FormData();
-        Object.keys(templateParams).forEach(key => {
-            formData.append(key, templateParams[key]);
-        });
+        Object.keys(templateParams).forEach(key => formData.append(key, templateParams[key]));
 
-        await fetch("https://script.google.com/macros/s/AKfycbyDEYoKk0KAUIak-MQGn1PJikwYPzF_WtcSkWd7oKFzjZgnSb_0nvu3HoJp-Nck8SDrwQ/exec", {
+        await fetch("https://script.google.com/macros/s/AKfycbyAQk6xjN_zIoMkt6l0rmNi0s04E_42KFAv_El6MFncxVl4QWYLvOQO2ySFIAy52yOjag/exec", {
             method: "POST",
             body: formData,
-            mode: "no-cors" 
+            mode: "no-cors"
         });
-        await emailjs.send(
+        console.log("Google Sheets: request sent");
+    } catch (err) {
+        console.warn("Google Sheets failed (non-critical):", err.message);
+    }
+
+    // Step 2: EmailJS (separate try/catch so we can see exactly what fails)
+    try {
+        console.log("Attempting EmailJS send...");
+        const result = await emailjs.send(
             "service_zc7tgmk",
             "template_kgkg90d",
             templateParams
         );
-
+        console.log("EmailJS success:", result);
         alert("Email Sent!!");
-
-        // RESET FORM
-        if (form) {
-            form.reset();
-        } else {
-            document.querySelectorAll("input, select").forEach(el => el.value = "");
-        }
-
+        form.reset();
     } catch (error) {
-alert("Email not sent. Please check your internet connection: " + (error?.text ? await error.text() : error?.message || JSON.stringify(error)));
-console.error("Full error:", error);    }
+        console.error("EmailJS error:", error);
+        alert("EmailJS failed: " + (error.text || error.message || JSON.stringify(error)));
+    }
 
     btn.innerText = "Submit";
     btn.disabled = false;
