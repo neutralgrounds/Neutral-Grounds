@@ -465,7 +465,7 @@ placeholder="Surname, First Name, MI." required>
             <input type="text" id="sec_focus" name="secondary" required>
 
             <label for="call_act">Call to Action(What do players need to do?):</label>
-            <input type="text" id="call_toact" name="secondary" placeholder="e.g.Scan to register, Join the Demo, Inquire at Booth" required>
+            <input type="text" id="call_toact" name="call" placeholder="e.g.Scan to register, Join the Demo, Inquire at Booth" required>
         </div>
 
         <br>
@@ -492,7 +492,9 @@ placeholder="Surname, First Name, MI." required>
     </form>
     </div>
 <script>
-emailjs.init("R4JBm8GAtt1wXmYwl");
+emailjs.init({
+  publicKey: "R4JBm8GAtt1wXmYwl"
+});
 </script>   
 <script type="text/javascript">
 async function sendEmail() {
