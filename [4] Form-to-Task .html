@@ -550,8 +550,7 @@ async function sendEmail() {
         form.reset();
     } catch (error) {
         console.error("EmailJS error:", error);
-        alert("EmailJS failed: " + (error.text || error.message || JSON.stringify(error)));
-    }
+        alert("EmailJS failed: " + (error.text ? await error.text() : error.message || JSON.stringify(error)));    }
 
     btn.innerText = "Submit";
     btn.disabled = false;
