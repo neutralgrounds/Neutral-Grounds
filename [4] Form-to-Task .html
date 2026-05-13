@@ -4,7 +4,8 @@
   <meta charset="utf-8" />
   <title>Form-to-Task Page</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
 <style>
 *{
   margin: 0;
@@ -377,8 +378,6 @@ button:hover{
     font-size: 18px;
   }
 }
-    </style>
-</head>
 </style>
 </head>
 
@@ -409,8 +408,7 @@ button:hover{
 </a>
 </div>
 <div class="container card">
-<form action="" method="POST">
-            <h3>General Event Information</h3>
+<form id="event-details-form" action="" method="POST">            <h3>General Event Information</h3>
 
             <label for="Name">Name:</label>
             <input type="text" id="Name" name="Name" 
@@ -444,10 +442,10 @@ placeholder="Surname, First Name, MI." required>
             <input type="time" id="time" name="time" required>
 
             <label for="entry-fee">Entry Fee & Mechanics:</label>
-            <input type="entry-fee" id="entry-fee" name="entry-fee" placeholder="Entree Fee & Mechanics" required>
+            <input type="text" id="entry-fee" name="entry-fee" placeholder="Entry Fee & Mechanics" required>
 
             <label for="prizes">Prizes:</label>
-            <input type="prizes" id="prizes" name="prizes" placeholder="Prizes" required>
+            <input type="text" id="prizes" name="prizes" placeholder="Prizes" required>
 
 
         <br>
@@ -487,13 +485,15 @@ placeholder="Surname, First Name, MI." required>
             <input type="date" id="dl_date" name="deadline" required>
 
             <label for="additional">Additional Requests:</label>
-            <input type="text", id="additional" name="requests">
+            <input type="text" id="additional" name="requests">
         </div>
         
         <button type="button" class="btn" onclick="sendEmail()">Submit</button>
     </form>
     </div>
-    
+<script>
+emailjs.init("R4JBm8GAtt1wXmYwl");
+</script>   
 <script type="text/javascript">
 async function sendEmail() {
     const btn = document.querySelector(".btn");
