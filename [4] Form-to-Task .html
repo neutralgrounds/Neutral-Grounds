@@ -399,7 +399,9 @@ button:hover{
   GROUNDS</h1>
 </header>
 
+<body>
   <!--SideBar-->
+<body>
     <div class="main-content">
     <div class="sidebar">
   <a href="[3] Demo Tracking Dashboard.html" class="menu-item">
@@ -415,9 +417,8 @@ button:hover{
     <span>Log Out</span>
 </a>
 </div>
-<body>
-  <div class="container card">
-    <form action="" method="POST">
+<div class="container card">
+    <form id="event-details-form" action="" method="POST">
         <div class="event-group">
             <h2>General Event Information</h2>
 
@@ -502,9 +503,8 @@ button:hover{
         
         <button type="button" class="btn" onclick="sendEmail()">Submit</button>
     </form>
-    </div>
-    
-    <script type="text/javascript">
+    <script type="text/javascript" src="script.js"></script>
+<script type="text/javascript">
         async function sendEmail() {
             const btn = document.querySelector(".btn");
             const form = document.getElementById("event-details-form");
@@ -531,17 +531,15 @@ button:hover{
 
             try {
                 const formData = new FormData();
-                Object.keys(templateParams).forEach(key => 
-                {formData.append(key, data[key]);
-            });
-                 
-                await fetch("https://script.google.com/macros/s/AKfycbx75e0g7M0BZUftUK-xnNOPU-SNjA6xr7LdvTdDsrXSOaHLxqqREh88gjVsBgATOsLN0Q/exec",
+                // Correct
+Object.keys(templateParams).forEach(key => formData.append(key, templateParams[key]));                 
+                await fetch("https://script.google.com/macros/s/AKfycbw3faWTmylVM9rnIZumYnXkkAXMOHiALrVySbHLTF-vAx447UArDQqmtuzGE4Y91Z3uog/exec",
                     {method: 'POST', 
                     body: formData,
                     mode: "no-cors"
                 });
             
-            await emailjs.send("service_u5ugn6a", "template_alec2ei", templateParams);
+            await emailjs.send("service_zc7tgmk", "template_o6vgc6y", templateParams);
             alert("Email Sent and Recorded!!!");
             
         
