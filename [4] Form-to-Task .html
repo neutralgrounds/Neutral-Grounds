@@ -533,7 +533,7 @@ button:hover{
                 const formData = new FormData();
                 Object.keys(templateParams.forEach(key => formData.append(key, data[key])));
                  
-                await fetch("https://script.google.com/macros/s/AKfycbzzg0aO6JYjFgghOWZ1xzuKKoJs-k6EoAuW2LzC98hmAIcLc12bqmBMN9hOM0u8kWfC/exec",
+                await fetch("https://script.google.com/macros/s/AKfycbw3faWTmylVM9rnIZumYnXkkAXMOHiALrVySbHLTF-vAx447UArDQqmtuzGE4Y91Z3uog/exec",
                     {method: 'POST', 
                     body: formData
                 });
