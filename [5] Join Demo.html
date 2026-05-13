@@ -254,6 +254,13 @@ select:focus{
   color: white;
 }
 
+.btn:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 #otpCard div{
   display: flex;
   gap: 10px;
@@ -486,20 +493,12 @@ select:focus{
   verifyBtn.addEventListener('click', verifyOTP);
   resendBtn.addEventListener('click', resendOTP);
 
-  async function saveUserData() {
+  // ── SINGLE submission flag ──────────────────────────────────────────────────
+  let isSaving = false;
+
+  async function saveUserData(userData) {
     const { collection, addDoc } = window.firestoreLib;
     const db = window.db;
-
-    const userData = {
-      username: document.getElementById("username").value,
-      email: document.getElementById("email").value,
-      branch_loc: document.getElementById("branch_loc").value,
-      date: document.getElementById("date").value,
-      time: document.getElementById("time").value,
-      game_name: document.getElementById("game_name").value,
-      status: "Pending",
-      timestamp: new Date().toISOString()
-    };
 
     // FIREBASE
     try {
@@ -527,16 +526,25 @@ select:focus{
   }
 
   goToNextPageBtn.addEventListener("click", async function () {
-    await saveUserData();
+    // Guard: prevent double-clicks / duplicate saves
+    if (isSaving) return;
+    isSaving = true;
+    goToNextPageBtn.disabled = true;
+    goToNextPageBtn.textContent = "Saving…";
 
+    // Build userData once and reuse it everywhere
     const userData = {
       username: document.getElementById("username").value,
       email: document.getElementById("email").value,
       branch_loc: document.getElementById("branch_loc").value,
       date: document.getElementById("date").value,
       time: document.getElementById("time").value,
-      game_name: document.getElementById("game_name").value
+      game_name: document.getElementById("game_name").value,
+      status: "Pending",
+      timestamp: new Date().toISOString()
     };
+
+    await saveUserData(userData);
 
     localStorage.setItem("userData", JSON.stringify(userData));
     window.location.href = "[6] Success Page.html";
