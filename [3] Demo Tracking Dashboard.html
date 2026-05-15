@@ -8,8 +8,7 @@
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-
+  import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
   // Your web app's Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyBxLreePpgQYwfyEXeIp7qSTVhrkPDlx0s",
@@ -28,8 +27,7 @@
 
   // Make Firestore available globally
   window.db = db;
-  window.firestoreLib = { collection, getDocs };
-  window.loadTable();
+  window.firestoreLib = { collection, getDocs, doc, updateDoc };
 </script>
   <style>
 *{
@@ -495,18 +493,27 @@ document.getElementById("searchInput").addEventListener("input", function () {
   });
 });
 /*Checkbox*/
-    function updateStatus(checkbox) {
+async function updateStatus(checkbox) {
   const row = checkbox.parentElement.parentElement;
   const statusCell = row.querySelector(".status");
+  const playerId = row.dataset.id; // we'll set this in loadTable
 
-  if (checkbox.checked) {
+  const claimed = checkbox.checked;
+
+  if (claimed) {
     statusCell.textContent = "Freebie Claimed!";
     statusCell.style.color = "#00ff99";
   } else {
     statusCell.textContent = "Pending";
     statusCell.style.color = "orange";
   }
-    countPending();
+
+  // Save to Firestore
+  const { doc, updateDoc } = window.firestoreLib;
+  const db = window.db;
+  await updateDoc(doc(db, "players", playerId), { freebie_claimed: claimed });
+
+  countPending();
   countClaimed();
 }
 
@@ -546,18 +553,21 @@ async function loadTable() {
   table.innerHTML = "";
 
   players.forEach((player, index) => {
-    const row = `
-      <tr>
-        <td>${index + 1}</td>
-        <td>${player.username}</td>
-        <td>${player.email}</td>
-        <td>${player.date}</td>
-        <td>${player.time || "-"}</td>
-        <td>${player.game_name}</td>
-        <td>${player.branch_loc}</td>
-        <td><input type="checkbox" onclick="updateStatus(this)"></td>
-        <td class="status">Pending</td>
-      </tr>`;
+const claimed = player.freebie_claimed === true;
+const row = `
+  <tr data-id="${player.id}">
+    <td>${index + 1}</td>
+    <td>${player.username}</td>
+    <td>${player.email}</td>
+    <td>${player.date}</td>
+    <td>${player.time || "-"}</td>
+    <td>${player.game_name}</td>
+    <td>${player.branch_loc}</td>
+    <td><input type="checkbox" ${claimed ? "checked" : ""} onclick="updateStatus(this)"></td>
+    <td class="status ${claimed ? "done" : "pending"}" style="color:${claimed ? "#00ff99" : "orange"}">
+      ${claimed ? "Freebie Claimed!" : "Pending"}
+    </td>
+  </tr>`;
     table.innerHTML += row;
   });
 
@@ -588,6 +598,15 @@ function countPending() {
 
   document.getElementById("pendingCount").textContent = pending;
 }
+// Wait for Firebase to be ready, then load
+function waitForFirebase() {
+  if (window.db && window.firestoreLib) {
+    loadTable();
+  } else {
+    setTimeout(waitForFirebase, 100);
+  }
+}
+waitForFirebase();
 </script>
 </body>
 
