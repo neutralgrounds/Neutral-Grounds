@@ -466,8 +466,10 @@ function filterStatus(type) {
   const rows = document.querySelectorAll("#playerTable tr");
 
   rows.forEach(row => {
-    const status = row.querySelector(".status").textContent;
-
+    const statusCell = row.querySelector(".status");
+    if (!statusCell) return; // skip rows without a status cell
+    const status = statusCell.textContent.trim();
+    
     if (type === "all") {
       row.style.display = "";
     } 
