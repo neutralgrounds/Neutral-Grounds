@@ -420,7 +420,7 @@ p {
 <button class="filter-btn" onclick="filterStatus('claimed')">
   Claimed</button>
 </div>
-<input type="text" id="searchInput" placeholder="Search player...">
+<input type="text" id="searchInput" placeholder="Search">
 </div>
 <!--Table-->
   <table>
@@ -469,7 +469,7 @@ function filterStatus(type) {
     const statusCell = row.querySelector(".status");
     if (!statusCell) return; // skip rows without a status cell
     const status = statusCell.textContent.trim();
-    
+
     if (type === "all") {
       row.style.display = "";
     } 
