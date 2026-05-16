@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://neutralgrounds.github.io/Neutral-Grounds/sitemap.xml
